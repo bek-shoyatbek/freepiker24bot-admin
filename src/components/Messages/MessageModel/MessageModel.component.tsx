@@ -1,19 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { IMessage } from "../types/Message.interface";
 import "./MessageModel.styles.css";
 
-export const MessageSelectionModal = ({
-  isOpen,
-  onClose,
-  onSend,
-  messages,
-}: {
+export const MessageSelectionModal: React.FC<{
   isOpen: boolean;
-  onClose: any;
-  onSend: any;
+  onClose: () => void;
+  onSend: (messageId: string) => void;
   messages: IMessage[];
-}) => {
-  const [selectedMessage, setSelectedMessage] = useState<string>();
+}> = ({ isOpen, onClose, onSend, messages }) => {
+  const [selectedMessage, setSelectedMessage] = useState<string>("");
 
   if (!isOpen) return null;
 
