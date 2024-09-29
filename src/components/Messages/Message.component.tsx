@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { API_BASE_URL } from "../../constants";
 import { IMessage } from "./types/Message.interface";
 import "./Message.styles.css";
+import { generateAuthHeaders } from "../../helpers/auth/generate-auth-headers.helper";
 
 const MessagesComponent = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -17,7 +18,9 @@ const MessagesComponent = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(API_BASE_URL + "/messages");
+      const response = await fetch(API_BASE_URL + "/messages", {
+        headers: generateAuthHeaders(),
+      });
       const data = await response.json();
       setMessages(data?.data);
     } catch (error) {
@@ -34,7 +37,10 @@ const MessagesComponent = () => {
     try {
       const response = await fetch(API_BASE_URL + "/messages", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...generateAuthHeaders(),
+        },
         body: JSON.stringify(newMessage),
       });
       if (response.ok) {
@@ -51,7 +57,10 @@ const MessagesComponent = () => {
       console.log("MessageID ", id);
       const response = await fetch(`${API_BASE_URL}/messages/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...generateAuthHeaders(),
+        },
         body: JSON.stringify(editingMessage),
       });
       if (response.ok) {
@@ -66,6 +75,7 @@ const MessagesComponent = () => {
   const deleteMessage = async (id: string) => {
     try {
       const response = await fetch(`${API_BASE_URL}/messages/${id}`, {
+        headers: generateAuthHeaders(),
         method: "DELETE",
       });
       if (response.ok) {

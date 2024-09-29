@@ -8,6 +8,7 @@ import { PaymentHistory } from "./PaymentHistory/PaymentHistory.component";
 import { UserPlan } from "./types/user-plan.interface";
 import { UserPlanHistory } from "./UserPlanHistory/UserPlanHistory.component";
 import "./UserDetailsPage.styles.css";
+import { generateAuthHeaders } from "../../helpers/auth/generate-auth-headers.helper";
 
 export const UserDetailsPage = () => {
   const { id } = useParams();
@@ -22,6 +23,7 @@ export const UserDetailsPage = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/users/${id}`, {
+          headers: generateAuthHeaders(),
           timeout: 10 * 1000,
         });
         setUser(response.data?.data?.user);

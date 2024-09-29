@@ -5,6 +5,7 @@ import axios from "axios";
 import { UserCard } from "../UserCard/UserCard.component";
 import { MessageSelectionModal } from "../../Messages/MessageModel/MessageModel.component";
 import "./UserListPage.styles.css";
+import { generateAuthHeaders } from "../../../helpers/auth/generate-auth-headers.helper";
 
 export const UserListPage = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);
@@ -20,6 +21,7 @@ export const UserListPage = () => {
   const fetchUsers = useCallback(async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/users`, {
+        headers: generateAuthHeaders(),
         timeout: 10 * 1000,
       });
       setUsers(response.data?.data);
@@ -34,6 +36,7 @@ export const UserListPage = () => {
   const fetchMessages = useCallback(async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/messages`, {
+        headers: generateAuthHeaders(),
         timeout: 10 * 1000,
       });
       setMessages(response.data?.data);
@@ -42,6 +45,15 @@ export const UserListPage = () => {
       setError(`Failed to fetch messages: ${(err as Error).message}`);
     }
   }, []);
+
+  useEffect(() => {
+    if (filter == "all") {
+      setSelectedUsers(users);
+    }
+    if (filter == "unusedFreeTrial") {
+      setSelectedUsers(users?.filter((user) => !user.freeTrialUsed));
+    }
+  }, [filter, users, selectedUsers]);
 
   useEffect(() => {
     fetchUsers();
@@ -60,15 +72,6 @@ export const UserListPage = () => {
     setFilteredUsers(filtered);
   }, [users, searchTerm, filter]);
 
-  useEffect(() => {
-    if (filter == "all") {
-      setSelectedUsers(users);
-    }
-    if (filter == "unusedFreeTrial") {
-      setSelectedUsers(users?.filter((user) => !user.freeTrialUsed));
-    }
-  }, [filter, users, selectedUsers]);
-
   const handleUserSelect = (user: UserInterface) => {
     setSelectedUsers((prev) =>
       prev.includes(user)
@@ -83,10 +86,14 @@ export const UserListPage = () => {
 
   const handleSendMessage = async (messageId: string) => {
     try {
-      await axios.post(`${API_BASE_URL}/messages/sendMessage`, {
-        userIds: selectedUsers.map((user) => user.telegramId),
-        messageId,
-      });
+      await axios.post(
+        `${API_BASE_URL}/messages/sendMessage`,
+        {
+          userIds: selectedUsers.map((user) => user.telegramId),
+          messageId,
+        },
+        { headers: generateAuthHeaders() },
+      );
       alert("Notification sent successfully!");
     } catch (error) {
       console.error("Error sending notification:", error);
