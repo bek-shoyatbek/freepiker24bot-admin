@@ -1,0 +1,61 @@
+.user-card {
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: #e6e4dc;
+}
+
+.user-card:hover {
+    background-color: #d1cfc5;
+}
+
+.user_info {
+    text-align: center;
+}
+
+.toggle_btn {
+    border-radius: 10px;
+    border: 1px solid blue;
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+}
+
+.toggled {
+    background-color: blue;
+}
+
+.profile-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.user-info p {
+    margin: 10px;
+}
+
+.tab-buttons {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.tab-button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.tab-content {
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

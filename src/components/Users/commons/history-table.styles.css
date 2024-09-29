@@ -1,0 +1,103 @@
+.history {
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.history h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.history-table th,
+.history-table td,
+.history-table th,
+.plan-table td {
+    border: 1px solid #e0e0e0;
+    padding: 12px;
+    text-align: left;
+}
+
+.history-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.history-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.history-table tr:hover {
+    background-color: #f0f0f0;
+}
+
+.status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status.pending {
+    background-color: #ffd700;
+    color: #000;
+}
+
+.status.approved,
+.status.active {
+    background-color: #90ee90;
+    color: #006400;
+}
+
+.status.rejected,
+.status.expired {
+    background-color: #ff6347;
+    color: #fff;
+}
+
+.cheque-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.cheque-image:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .payment-table,
+    .plan-table {
+        font-size: 0.9rem;
+    }
+
+    .payment-table th,
+    .payment-table td,
+    .plan-table th,
+    .plan-table td {
+        padding: 8px;
+    }
+
+    .status {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
