@@ -12,14 +12,14 @@ function App() {
           <Link to="/" className="nav-link">
             Home
           </Link>
-          <Link to="/messages" className="nav-link">
-            Messages
+          <Link to="/message" className="nav-link">
+            Message
           </Link>
         </nav>
         <Routes>
           <Route path="/" element={<UserListPage />} />
           <Route path="/user/:id" element={<UserDetailsPage />} />
-          <Route path="/messages" element={<MessagesComponent />} />
+          <Route path="/message" element={<MessagesComponent />} />
         </Routes>
       </div>
     </Router>
