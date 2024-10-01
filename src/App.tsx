@@ -15,8 +15,8 @@ function App() {
         <div>
           <Navbar />
           <Routes>
+            <Route path="/" element={<UserListPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/home" element={<UserListPage />} />
             <Route path="/user/:id" element={<UserDetailsPage />} />
             <Route path="/message" element={<MessagesPage />} />
             <Route path="*" element={<NotFoundPage />} />
