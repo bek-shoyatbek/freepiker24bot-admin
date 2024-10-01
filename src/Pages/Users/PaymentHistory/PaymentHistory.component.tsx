@@ -1,6 +1,5 @@
-import { PaymentInterface } from "../types/payment.interface";
-import "../commons/history-table.styles.css";
-
+import { PaymentInterface } from "../../../types/payment.interface";
+import "../../../commons/history-table.styles.css";
 export const PaymentHistory = ({
   payments,
 }: {

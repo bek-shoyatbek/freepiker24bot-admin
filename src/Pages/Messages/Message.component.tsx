@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../../constants";
 import { IMessage } from "./types/Message.interface";
 import "./Message.styles.css";
-import { generateAuthHeaders } from "../../helpers/auth/generate-auth-headers.helper";
+import { Axios } from "../../Api/axios";
 
-const MessagesComponent = () => {
+export const MessagesPage = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [newMessage, setNewMessage] = useState<IMessage>({
     title: "",
@@ -18,10 +17,8 @@ const MessagesComponent = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(API_BASE_URL + "/messages", {
-        headers: generateAuthHeaders(),
-      });
-      const data = await response.json();
+      const response = await Axios.get("/messages");
+      const data = response.data;
       setMessages(data?.data);
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -35,15 +32,8 @@ const MessagesComponent = () => {
 
   const addMessage = async () => {
     try {
-      const response = await fetch(API_BASE_URL + "/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...generateAuthHeaders(),
-        },
-        body: JSON.stringify(newMessage),
-      });
-      if (response.ok) {
+      const response = await Axios.post("messages", JSON.stringify(newMessage));
+      if (response.status == 200) {
         fetchMessages();
         setNewMessage({ title: "", text: "" });
       }
@@ -55,15 +45,13 @@ const MessagesComponent = () => {
   const updateMessage = async (id: string) => {
     try {
       console.log("MessageID ", id);
-      const response = await fetch(`${API_BASE_URL}/messages/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          ...generateAuthHeaders(),
-        },
-        body: JSON.stringify(editingMessage),
-      });
-      if (response.ok) {
+
+      const response = await Axios.put(
+        `/messages/${id}`,
+        JSON.stringify(editingMessage),
+      );
+
+      if (response.status == 200) {
         fetchMessages();
         setEditingMessage({ text: "", title: "" });
       }
@@ -74,11 +62,9 @@ const MessagesComponent = () => {
 
   const deleteMessage = async (id: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/messages/${id}`, {
-        headers: generateAuthHeaders(),
-        method: "DELETE",
-      });
-      if (response.ok) {
+      const response = await Axios.delete(`/messages/${id}`);
+
+      if (response.status == 204) {
         fetchMessages();
       }
     } catch (error) {
@@ -172,5 +158,3 @@ const MessagesComponent = () => {
     </div>
   );
 };
-
-export default MessagesComponent;

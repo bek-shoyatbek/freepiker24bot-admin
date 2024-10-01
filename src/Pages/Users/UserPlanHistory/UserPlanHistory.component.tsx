@@ -1,5 +1,5 @@
-import { UserPlan } from "../types/user-plan.interface";
-import "../commons/history-table.styles.css";
+import { UserPlan } from "../../../types/user-plan.interface";
+import "../../../commons/history-table.styles.css";
 
 export const UserPlanHistory = ({ plans }: { plans: UserPlan[] }) => {
   if (!plans || plans.length === 0) {

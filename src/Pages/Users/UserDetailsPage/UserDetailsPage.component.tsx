@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { UserInterface } from "./types/user.interface";
-import axios from "axios";
-import { API_BASE_URL } from "../../constants";
-import { PaymentInterface } from "./types/payment.interface";
-import { PaymentHistory } from "./PaymentHistory/PaymentHistory.component";
-import { UserPlan } from "./types/user-plan.interface";
-import { UserPlanHistory } from "./UserPlanHistory/UserPlanHistory.component";
 import "./UserDetailsPage.styles.css";
-import { generateAuthHeaders } from "../../helpers/auth/generate-auth-headers.helper";
+import { UserInterface } from "../../../types/user.interface";
+import { PaymentInterface } from "../../../types/payment.interface";
+import { UserPlan } from "../../../types/user-plan.interface";
+import { PaymentHistory } from "../PaymentHistory/PaymentHistory.component";
+import { UserPlanHistory } from "../UserPlanHistory/UserPlanHistory.component";
+import { Axios } from "../../../Api/axios";
 
 export const UserDetailsPage = () => {
   const { id } = useParams();
@@ -22,10 +20,8 @@ export const UserDetailsPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/users/${id}`, {
-          headers: generateAuthHeaders(),
-          timeout: 10 * 1000,
-        });
+        const response = await Axios.get(`/users/${id}`);
+
         setUser(response.data?.data?.user);
         setPayments(response.data?.data?.payments);
         setUserPlans(response.data?.data?.plans);

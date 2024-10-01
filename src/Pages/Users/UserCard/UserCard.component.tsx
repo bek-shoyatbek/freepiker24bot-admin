@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { UserInterface } from "../types/user.interface";
 import "./UserCard.styles.css";
+import { UserInterface } from "../../../types/user.interface";
 
 export const UserCard = ({
   user,

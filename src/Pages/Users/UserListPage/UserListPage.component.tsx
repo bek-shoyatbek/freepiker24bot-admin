@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { UserInterface } from "../types/user.interface";
-import { API_BASE_URL } from "../../../constants";
-import axios from "axios";
 import { UserCard } from "../UserCard/UserCard.component";
 import { MessageSelectionModal } from "../../Messages/MessageModel/MessageModel.component";
 import "./UserListPage.styles.css";
-import { generateAuthHeaders } from "../../../helpers/auth/generate-auth-headers.helper";
+import { UserInterface } from "../../../types/user.interface";
+import { Axios } from "../../../Api/axios";
 
 export const UserListPage = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);
@@ -20,10 +18,7 @@ export const UserListPage = () => {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/users`, {
-        headers: generateAuthHeaders(),
-        timeout: 10 * 1000,
-      });
+      const response = await Axios.get(`/users`);
       setUsers(response.data?.data);
       setLoading(false);
     } catch (err) {
@@ -35,10 +30,7 @@ export const UserListPage = () => {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/messages`, {
-        headers: generateAuthHeaders(),
-        timeout: 10 * 1000,
-      });
+      const response = await Axios.get(`/messages`);
       setMessages(response.data?.data);
     } catch (err) {
       console.error(err);
@@ -86,14 +78,10 @@ export const UserListPage = () => {
 
   const handleSendMessage = async (messageId: string) => {
     try {
-      await axios.post(
-        `${API_BASE_URL}/messages/sendMessage`,
-        {
-          userIds: selectedUsers.map((user) => user.telegramId),
-          messageId,
-        },
-        { headers: generateAuthHeaders() },
-      );
+      await Axios.post(`/messages/sendMessage`, {
+        userIds: selectedUsers.map((user) => user.telegramId),
+        messageId,
+      });
       alert("Notification sent successfully!");
     } catch (error) {
       console.error("Error sending notification:", error);
