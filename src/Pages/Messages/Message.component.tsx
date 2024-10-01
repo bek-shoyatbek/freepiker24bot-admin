@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { IMessage } from "./types/Message.interface";
 import "./Message.styles.css";
 import { Axios } from "../../Api/axios";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const MessagesPage = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -10,6 +12,8 @@ export const MessagesPage = () => {
     text: "",
   });
   const [editingMessage, setEditingMessage] = useState<IMessage>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMessages();
@@ -21,6 +25,9 @@ export const MessagesPage = () => {
       const data = response.data;
       setMessages(data?.data);
     } catch (error) {
+      if (error instanceof AxiosError && error.status == 400) {
+        navigate("/login");
+      }
       console.error("Error fetching messages:", error);
     }
   };

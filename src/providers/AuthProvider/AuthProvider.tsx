@@ -10,6 +10,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   useEffect(() => {
+    Axios.defaults.headers.common["Content-Type"] = "application/json";
     if (token) {
       Axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {

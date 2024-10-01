@@ -4,6 +4,8 @@ import { MessageSelectionModal } from "../../Messages/MessageModel/MessageModel.
 import "./UserListPage.styles.css";
 import { UserInterface } from "../../../types/user.interface";
 import { Axios } from "../../../Api/axios";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const UserListPage = () => {
   const [users, setUsers] = useState<UserInterface[]>([]);
@@ -15,6 +17,7 @@ export const UserListPage = () => {
   const [selectedUsers, setSelectedUsers] = useState<UserInterface[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate();
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -25,6 +28,9 @@ export const UserListPage = () => {
       console.error(err);
       setError(`Failed to fetch users: ${(err as Error).message}`);
       setLoading(false);
+      if (err instanceof AxiosError && err.status == 400) {
+        navigate("/login");
+      }
     }
   }, []);
 
@@ -35,6 +41,7 @@ export const UserListPage = () => {
     } catch (err) {
       console.error(err);
       setError(`Failed to fetch messages: ${(err as Error).message}`);
+      navigate("/login");
     }
   }, []);
 

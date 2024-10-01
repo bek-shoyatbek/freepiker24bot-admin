@@ -1,34 +1,24 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import "./LoginPage.styles.css"; // We'll create this CSS file separately
-import { Axios } from "../../Api/axios";
-
-interface LoginResponse {
-  token: string;
-}
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await Axios.post(
-        "/auth/login",
-        JSON.stringify({ username, password }),
-      );
-
-      if (response.status > 400) {
-        throw new Error("Login failed");
-      }
-
-      const data: LoginResponse = response.data;
+      await login(username, password);
       // Handle successful login, e.g., store the token in localStorage
-      localStorage.setItem("token", data.token);
       // Show success message
       Swal.fire({
         icon: "success",
@@ -36,7 +26,7 @@ export const LoginPage: React.FC = () => {
         text: "You have been successfully logged in!",
       });
       // Redirect or update app state as needed
-      console.log("Login successful, token:", data.token);
+      navigate("/home");
     } catch (err) {
       console.error(err);
       Swal.fire({
