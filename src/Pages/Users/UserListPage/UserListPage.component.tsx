@@ -129,19 +129,12 @@ export const UserListPage = () => {
         className="search-input"
       />
       {selectedUsers.length > 0 && (
-        <div className="selected-users">
-          {selectedUsers?.map((selectedUser) => (
-            <p key={selectedUser.telegramId} className="selected-user">
-              {selectedUser?.username ?? selectedUser?.name}
-            </p>
-          ))}
-          <button
-            className="send-notification-button"
-            onClick={handleSendNotification}
-          >
-            Send Notification ({selectedUsers.length})
-          </button>
-        </div>
+        <button
+          className="send-notification-button"
+          onClick={handleSendNotification}
+        >
+          Send Notification ({selectedUsers.length})
+        </button>
       )}
       <div className="user-grid">
         {filteredUsers.map((user) => (
