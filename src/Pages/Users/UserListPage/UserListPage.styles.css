@@ -27,35 +27,10 @@ h1 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Selected Users Display */
-.selected-users {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    max-width: 60%;
-}
-
-.selected-user {
-    color: #333;
-    padding: 6px 12px;
-    border-radius: 4px;
-    background-color: #fff3cd;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    border: 1px solid #ffeeba;
-}
-
-.selected-username {
-    font-size: 14px;
-    font-weight: 500;
-}
-
 /* Filter Buttons */
 .filter-buttons {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
 }
 
 .filter-button {
@@ -105,8 +80,6 @@ h1 {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-bottom: 20px;
-    margin-left: 8px;
     transition: all 0.2s ease;
     font-size: 14px;
     font-weight: 500;
@@ -118,7 +91,6 @@ h1 {
 .send-notification-button:hover {
     background-color: #218838;
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .send-notification-button:active {
@@ -131,12 +103,6 @@ h1 {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     padding: 8px;
-}
-
-/* Loading State */
-.loading {
-    opacity: 0.7;
-    pointer-events: none;
 }
 
 /* Responsive Design */
@@ -163,10 +129,6 @@ h1 {
         justify-content: flex-start;
     }
 
-    .selected-users {
-        max-width: 100%;
-    }
-
     h1 {
         font-size: 24px;
     }
@@ -185,9 +147,59 @@ h1 {
         padding: 6px 12px;
         font-size: 13px;
     }
+}
 
-    .selected-user {
-        padding: 4px 8px;
+/* Button Groups */
+.button-groups {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Unselect Button */
+.unselect-button {
+    padding: 8px 16px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.unselect-button:hover {
+    background-color: #ff7875;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(255, 77, 79, 0.2);
+}
+
+.unselect-button:active {
+    transform: translateY(0);
+    background-color: #f5222d;
+}
+
+/* Update mobile responsive styles */
+@media (max-width: 768px) {
+    .button-groups {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .unselect-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .unselect-button {
+        padding: 6px 12px;
         font-size: 13px;
     }
 }

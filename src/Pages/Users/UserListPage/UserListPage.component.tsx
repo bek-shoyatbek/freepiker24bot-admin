@@ -79,6 +79,11 @@ export const UserListPage = () => {
     );
   };
 
+  const handleUnselectAll = () => {
+    setSelectedUsers([]);
+    setFilter("");
+  };
+
   const handleSendNotification = () => {
     setIsModalOpen(true);
   };
@@ -106,21 +111,31 @@ export const UserListPage = () => {
       <h1>User List</h1>
       <div className="user-list-header">
         <p>Total Users: {users.length}</p>
-        <div className="filter-buttons">
-          <button
-            className={`filter-button ${filter === "all" ? "active" : ""}`}
-            onClick={() => setFilter("all")}
-          >
-            All Users
-          </button>
-          <button
-            className={`filter-button ${filter === "unusedFreeTrial" ? "active" : ""}`}
-            onClick={() => setFilter("unusedFreeTrial")}
-          >
-            Unused Free Trial
-          </button>
+        <div className="button-groups">
+          <div className="filter-buttons">
+            <button
+              className={`filter-button ${filter === "all" ? "active" : ""}`}
+              onClick={() => setFilter("all")}
+            >
+              All Users
+            </button>
+            <button
+              className={`filter-button ${
+                filter === "unusedFreeTrial" ? "active" : ""
+              }`}
+              onClick={() => setFilter("unusedFreeTrial")}
+            >
+              Unused Free Trial
+            </button>
+          </div>
+          {selectedUsers.length > 0 && (
+            <button className="unselect-button" onClick={handleUnselectAll}>
+              Unselect All ({selectedUsers.length})
+            </button>
+          )}
         </div>
       </div>
+
       <input
         type="text"
         placeholder="Search users..."
@@ -128,6 +143,7 @@ export const UserListPage = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
+
       {selectedUsers.length > 0 && (
         <button
           className="send-notification-button"
@@ -136,6 +152,7 @@ export const UserListPage = () => {
           Send Notification ({selectedUsers.length})
         </button>
       )}
+
       <div className="user-grid">
         {filteredUsers.map((user) => (
           <UserCard
@@ -146,7 +163,9 @@ export const UserListPage = () => {
           />
         ))}
       </div>
+
       {filteredUsers.length === 0 && <p>No users found.</p>}
+
       <MessageSelectionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
