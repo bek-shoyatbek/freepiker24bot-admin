@@ -26,7 +26,7 @@ export const LoginPage: React.FC = () => {
         text: "You have been successfully logged in!",
       });
       // Redirect or update app state as needed
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       console.error(err);
       Swal.fire({

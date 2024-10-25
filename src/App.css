@@ -1,24 +1,158 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
 }
 
+/* Reset default styles */
 .main-nav {
-    background-color: #333;
-    padding: 10px 20px;
-    margin: 1px 1px;
-    width: 100%;
+    background: linear-gradient(to right, #ffffff, #f8f9fa);
+    padding: 1rem 2.5rem;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+    backdrop-filter: blur(8px);
 }
 
+/* Base link styles */
 .nav-link {
-    color: white;
     text-decoration: none;
-    font-size: 20px;
-    margin-left: 20px;
+    color: #374151;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    letter-spacing: 0.3px;
+}
+
+/* Hover effect with pseudo-element */
+.nav-link:before {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #3b82f6;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover:before {
+    width: 80%;
 }
 
 .nav-link:hover {
-    text-decoration: underline;
+    color: #3b82f6;
+    transform: translateY(-1px);
+}
+
+/* Active state */
+.nav-link.active {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.nav-link.active:before {
+    width: 80%;
+}
+
+/* Special styling for login link */
+.nav-link:last-child {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+.nav-link:last-child:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.4);
+}
+
+.nav-link:last-child:before {
+    display: none;
+}
+
+/* Add focus styles for accessibility */
+.nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-nav {
+        padding: 0.875rem 1.25rem;
+        gap: 1.25rem;
+    }
+
+    .nav-link {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .nav-link:last-child {
+        padding: 0.5rem 1.25rem;
+    }
+}
+
+/* Add smooth scrolling to the whole page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Optional: Add dark mode support */
+@media (prefers-color-scheme: dark) {
+    .main-nav {
+        background: linear-gradient(to right, #1f2937, #111827);
+        border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+    }
+
+    .nav-link {
+        color: #e5e7eb;
+    }
+
+    .nav-link:hover {
+        color: #60a5fa;
+    }
+
+    .nav-link.active {
+        background-color: rgba(96, 165, 250, 0.1);
+        color: #60a5fa;
+    }
+
+    .nav-link:last-child {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .nav-link:last-child:hover {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+}
+
+/* Add animation for page load */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.main-nav {
+    animation: fadeIn 0.5s ease-out;
 }
