@@ -7,6 +7,7 @@ import { UserPlan } from "../../../types/user-plan.interface";
 import { PaymentHistory } from "../PaymentHistory/PaymentHistory.component";
 import { UserPlanHistory } from "../UserPlanHistory/UserPlanHistory.component";
 import { Axios } from "../../../Api/axios";
+import { MessageCircle, User, RotateCcw, FileText } from "lucide-react";
 
 export const UserDetailsPage = () => {
   const { id } = useParams();
@@ -21,14 +22,13 @@ export const UserDetailsPage = () => {
     const fetchUser = async () => {
       try {
         const response = await Axios.get(`/users/${id}`);
-
         setUser(response.data?.data?.user);
         setPayments(response.data?.data?.payments);
         setUserPlans(response.data?.data?.plans);
         setLoading(false);
       } catch (err) {
         console.error(err);
-        setError(`Failed to fetch user details\n`);
+        setError(`Failed to fetch user details`);
         setLoading(false);
       }
     };
@@ -36,45 +36,92 @@ export const UserDetailsPage = () => {
     fetchUser();
   }, [id]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-  if (!user) return <div>User not found</div>;
+  const handleMessage = () => {
+    // Implement message functionality
+    console.log("Message button clicked");
+  };
+
+  if (loading) {
+    return <div className="loading-state">Loading user details...</div>;
+  }
+
+  if (error) {
+    return <div className="error-state">{error}</div>;
+  }
+
+  if (!user) {
+    return <div className="not-found-state">User not found</div>;
+  }
 
   return (
-    <div className="page-container">
-      <h1>{user.name}</h1>
-      <div className="profile-image">
-        <img
-          src={`https://via.placeholder.com/150?text=${user.name}`}
-          alt={user.name}
-        />
+    <div className="user-details-container">
+      <div className="user-details-header">
+        <div className="user-details-info">
+          <h1>{user.name}</h1>
+          <div className="username">@{user.username}</div>
+        </div>
       </div>
-      <div className="user-info">
-        <p>Username: @{user.username}</p>
-        <p>Free Trial Used: {user.freeTrialUsed ? "Yes" : "No"}</p>
-        <p>Daily Requests: {user.dailyRequestsCount}</p>
-        <p>Last Reset: {new Date(user.lastResetDate).toLocaleDateString()}</p>
+
+      <div className="stats-grid">
+        <div className="stat-card">
+          <User size={20} />
+          <div className="stat-content">
+            <div className="stat-label">Free Trial</div>
+            <div className="stat-value">
+              {user.freeTrialUsed ? "Used" : "Available"}
+            </div>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <FileText size={20} />
+          <div className="stat-content">
+            <div className="stat-label">Daily Requests</div>
+            <div className="stat-value">{user.dailyRequestsCount}</div>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <RotateCcw size={20} />
+          <div className="stat-content">
+            <div className="stat-label">Last Reset</div>
+            <div className="stat-value">
+              {new Date(user.lastResetDate).toLocaleDateString()}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="tab-buttons">
-        <button
-          className={`tab-button ${activeTab === "payments" ? "active" : ""}`}
-          onClick={() => setActiveTab("payments")}
-        >
-          Payment History
+
+      <div className="message-button-container">
+        <button className="message-button" onClick={handleMessage}>
+          <MessageCircle size={20} />
+          <span>Send Message</span>
         </button>
-        <button
-          className={`tab-button ${activeTab === "plans" ? "active" : ""}`}
-          onClick={() => setActiveTab("plans")}
-        >
-          User Plans History
-        </button>
       </div>
-      <div className="tab-content">
-        {activeTab === "payments" ? (
-          <PaymentHistory payments={payments!} />
-        ) : (
-          <UserPlanHistory plans={userPlans!} />
-        )}
+
+      <div className="tabs-container">
+        <div className="tabs-header">
+          <button
+            className={`tab-button ${activeTab === "payments" ? "active" : ""}`}
+            onClick={() => setActiveTab("payments")}
+          >
+            Payment History
+          </button>
+          <button
+            className={`tab-button ${activeTab === "plans" ? "active" : ""}`}
+            onClick={() => setActiveTab("plans")}
+          >
+            Plan History
+          </button>
+        </div>
+
+        <div className="tab-content">
+          {activeTab === "payments" ? (
+            <PaymentHistory payments={payments!} />
+          ) : (
+            <UserPlanHistory plans={userPlans!} />
+          )}
+        </div>
       </div>
     </div>
   );

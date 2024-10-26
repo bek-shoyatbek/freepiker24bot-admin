@@ -1,132 +1,105 @@
 /* Container for all cards */
 .cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
 /* Card Container */
 .user-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-    max-width: 280px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  max-width: 280px;
 }
 
 .user-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 /* Profile Image */
 .profile-image {
-    text-align: center;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .profile-image img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 /* User Info */
 .user_info {
-    text-align: center;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .user-info p {
-    margin: 5px 0;
-    color: #333;
-    font-size: 14px;
+  margin: 5px 0;
+  color: #333;
+  font-size: 14px;
 }
 
 .user-name {
-    font-weight: 600;
-    font-size: 16px;
-    color: #2c3e50;
+  font-weight: 600;
+  font-size: 16px;
+  color: #2c3e50;
 }
 
 /* Simplified Toggle Button */
 .toggle_btn {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 2px solid #007bff;
-    background-color: white;
-    cursor: pointer;
-    margin: 10px auto;
-    transition: background-color 0.2s ease;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #007bff;
+  background-color: white;
+  cursor: pointer;
+  margin: 10px auto;
+  transition: background-color 0.2s ease;
 }
 
 .toggled {
-    background-color: #007bff;
-}
-
-/* Tabs */
-.tab-buttons {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
-}
-
-.tab-button {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #666;
-}
-
-.tab-button:hover {
-    background-color: #ebebeb;
-}
-
-.tab-button.active {
-    background-color: #007bff;
-    color: white;
+  background-color: #007bff;
 }
 
 /* Tab Content */
 .tab-content {
-    background-color: #f8f8f8;
-    padding: 15px;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #444;
+  background-color: #f8f8f8;
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #444;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .cards-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        padding: 15px;
-        gap: 15px;
-    }
+  .cards-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    padding: 15px;
+    gap: 15px;
+  }
 
-    .user-card {
-        padding: 15px;
-    }
+  .user-card {
+    padding: 15px;
+  }
 
-    .profile-image img {
-        width: 60px;
-        height: 60px;
-    }
+  .profile-image img {
+    width: 60px;
+    height: 60px;
+  }
 }
 
 @media (max-width: 480px) {
-    .cards-container {
-        grid-template-columns: 1fr;
-    }
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
 
-    .user-card {
-        max-width: 100%;
-    }
+  .user-card {
+    max-width: 100%;
+  }
 }

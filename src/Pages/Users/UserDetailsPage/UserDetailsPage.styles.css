@@ -1,39 +1,303 @@
-.user_info {
-    text-align: center;
+/* Container */
+.user-details-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.profile-image img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 20px;
+/* Header */
+.user-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
 }
 
-.user-info p {
-    margin: 10px;
+.user-details-info h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
 }
 
-.tab-buttons {
-    display: flex;
-    margin-bottom: 20px;
+.username {
+  margin-top: 4px;
+  color: #666;
+  font-size: 14px;
 }
 
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.stat-card svg {
+  color: #666;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.stat-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Message Button */
+.message-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.message-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.message-button:hover {
+  background-color: #e9ecef;
+}
+
+.message-button svg {
+  width: 16px;
+  height: 16px;
+}
+/* Tab Container */
+.tabs-container {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Tab Header */
+.tabs-header {
+  display: flex;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  padding: 0 16px;
+}
+
+/* Tab Buttons */
 .tab-button {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  margin-right: 16px;
+}
+
+.tab-button:last-child {
+  margin-right: 0;
+}
+
+.tab-button:hover {
+  color: #333;
 }
 
 .tab-button.active {
-    background-color: #007bff;
-    color: white;
+  color: #2196f3;
+  border-bottom: 2px solid #2196f3;
 }
 
+/* Tab Content */
 .tab-content {
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  padding: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .tabs-header {
+    overflow-x: auto;
+    padding: 0 12px;
+  }
+
+  .tab-button {
+    padding: 12px 16px;
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+}
+
+/* Table Styles (for PaymentHistory and UserPlanHistory) */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.history-table th {
+  font-weight: 500;
+  color: #666;
+  background-color: #f8f9fa;
+}
+
+.history-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.history-table td {
+  color: #333;
+}
+
+/* Status and Plan Badges */
+.status-badge,
+.plan-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.status-badge.expired {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}
+
+.plan-badge.basic {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: #2196f3;
+}
+
+.plan-badge.standard {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
+.plan-badge.premium {
+  background-color: rgba(156, 39, 176, 0.1);
+  color: #9c27b0;
+}
+
+/* Loading, Error, and Not Found States */
+.loading-state,
+.error-state,
+.not-found-state {
+  padding: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.error-state {
+  color: #dc3545;
+}
+
+/* Empty State */
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .user-details-container {
+    padding: 16px;
+  }
+
+  .user-details-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .message-button-container {
+    justify-content: flex-start;
+  }
+
+  .tabs-header {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .tab-button {
+    padding: 12px 16px;
+  }
+
+  .history-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .history-table th,
+  .history-table td {
+    padding: 8px 12px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .message-button-container {
+    display: none;
+  }
+
+  .user-details-container {
+    padding: 0;
+  }
+
+  .tabs-header {
+    display: none;
+  }
+
+  .tab-content {
+    padding: 0;
+  }
 }
