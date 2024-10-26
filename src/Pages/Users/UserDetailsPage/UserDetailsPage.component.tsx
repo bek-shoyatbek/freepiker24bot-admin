@@ -95,7 +95,7 @@ export const UserDetailsPage = () => {
       <div className="message-button-container">
         <button className="message-button" onClick={handleMessage}>
           <MessageCircle size={20} />
-          <span>Send Message</span>
+          <span className="message-text">Send Message</span>
         </button>
       </div>
 
