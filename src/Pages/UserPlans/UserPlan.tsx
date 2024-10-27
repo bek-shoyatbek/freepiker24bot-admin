@@ -3,12 +3,7 @@ import "./UserPlan.css";
 import { Axios } from "../../Api/axios";
 import { PaymentsData } from "./types/payments-data";
 import { useNavigate } from "react-router-dom";
-
-const PLAN_PRICES = {
-  BASIC: 19000,
-  STANDARD: 29000,
-  PREMIUM: 39000,
-};
+import { formatDate, renderAnalytics } from "./helpers";
 
 export const UserPlan = () => {
   const [payments, setPayments] = useState<PaymentsData[]>([]);
@@ -17,6 +12,7 @@ export const UserPlan = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlan, setSelectedPlan] = useState("ALL");
   const [selectedStatus, setSelectedStatus] = useState("ALL");
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "asc" | "desc";
@@ -47,12 +43,21 @@ export const UserPlan = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+  const handleDelete = async (userPlanId: string) => {
+    if (!window.confirm("Are you sure you want to delete this user plan?")) {
+      return;
+    }
+
+    try {
+      setDeleteLoading(userPlanId);
+      await Axios.delete(`/user-plans/${userPlanId}`);
+      setPayments(payments.filter((payment) => payment.userId !== userPlanId));
+    } catch (err) {
+      setError("Failed to delete user plan. Please try again later.");
+      console.error("Error deleting user plan:", err);
+    } finally {
+      setDeleteLoading(null);
+    }
   };
 
   const handleSort = (key: string) => {
@@ -80,20 +85,17 @@ export const UserPlan = () => {
   });
 
   const sortData = (a: any, b: any, key: string, direction: "asc" | "desc") => {
-    // Convert dates to timestamps for comparison
     if (key === "startDate" || key === "endDate") {
       const dateA = new Date(a[key]).getTime();
       const dateB = new Date(b[key]).getTime();
       return direction === "asc" ? dateA - dateB : dateB - dateA;
     }
 
-    // Handle string comparisons
     if (typeof a[key] === "string") {
       const compareResult = a[key].localeCompare(b[key]);
       return direction === "asc" ? compareResult : -compareResult;
     }
 
-    // Handle number comparisons
     const valueA = a[key];
     const valueB = b[key];
     return direction === "asc" ? valueA - valueB : valueB - valueA;
@@ -108,105 +110,6 @@ export const UserPlan = () => {
     )
   );
 
-  const calculateAnalytics = (data: PaymentsData[]) => {
-    const now = new Date();
-    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-
-    const thisWeekPayments = data.filter(
-      (payment) => new Date(payment.startDate) >= oneWeekAgo
-    );
-
-    const thisMonthPayments = data.filter(
-      (payment) => new Date(payment.startDate) >= oneMonthAgo
-    );
-
-    const calculateTotalAmount = (payments: PaymentsData[]) => {
-      return payments.reduce((total, payment) => {
-        return total + PLAN_PRICES[payment.plan as keyof typeof PLAN_PRICES];
-      }, 0);
-    };
-
-    const planCounts = {
-      BASIC: data.filter((p) => p.plan === "BASIC").length,
-      STANDARD: data.filter((p) => p.plan === "STANDARD").length,
-      PREMIUM: data.filter((p) => p.plan === "PREMIUM").length,
-    };
-
-    return {
-      totalPayments: data.length,
-      thisWeekPayments: thisWeekPayments.length,
-      thisMonthPayments: thisMonthPayments.length,
-      totalAmount: calculateTotalAmount(data),
-      thisWeekAmount: calculateTotalAmount(thisWeekPayments),
-      thisMonthAmount: calculateTotalAmount(thisMonthPayments),
-      planCounts,
-      planRevenue: {
-        BASIC: planCounts.BASIC * PLAN_PRICES.BASIC,
-        STANDARD: planCounts.STANDARD * PLAN_PRICES.STANDARD,
-        PREMIUM: planCounts.PREMIUM * PLAN_PRICES.PREMIUM,
-      },
-    };
-  };
-
-  const renderAnalytics = () => {
-    const analytics = calculateAnalytics(payments);
-
-    return (
-      <div className="analytics-container">
-        <div className="analytics-grid">
-          <div className="analytics-card total-payments">
-            <h3>Total Payments</h3>
-            <div className="analytics-value">{analytics.totalPayments}</div>
-            <div className="analytics-subtitle">All time</div>
-          </div>
-
-          <div className="analytics-card">
-            <h3>Recent Activity</h3>
-            <div className="analytics-row">
-              <span>This Week</span>
-              <span>{analytics.thisWeekPayments} payments</span>
-            </div>
-            <div className="analytics-row">
-              <span>This Month</span>
-              <span>{analytics.thisMonthPayments} payments</span>
-            </div>
-          </div>
-
-          <div className="analytics-card">
-            <h3>Revenue</h3>
-            <div className="analytics-row">
-              <span>Total Revenue</span>
-              <span>{analytics.totalAmount.toLocaleString()} sum</span>
-            </div>
-            <div className="analytics-row">
-              <span>This Month</span>
-              <span>{analytics.thisMonthAmount.toLocaleString()} sum</span>
-            </div>
-          </div>
-
-          <div className="analytics-card">
-            <h3>Plan Distribution</h3>
-            <div className="analytics-row">
-              <span>Basic ({PLAN_PRICES.BASIC.toLocaleString()} sum)</span>
-              <span>{analytics.planCounts.BASIC} users</span>
-            </div>
-            <div className="analytics-row">
-              <span>
-                Standard ({PLAN_PRICES.STANDARD.toLocaleString()} sum)
-              </span>
-              <span>{analytics.planCounts.STANDARD} users</span>
-            </div>
-            <div className="analytics-row">
-              <span>Premium ({PLAN_PRICES.PREMIUM.toLocaleString()} sum)</span>
-              <span>{analytics.planCounts.PREMIUM} users</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   if (loading) {
     return <div className="loading-state">Loading payments...</div>;
   }
@@ -217,7 +120,7 @@ export const UserPlan = () => {
 
   return (
     <div className="payments-container">
-      {renderAnalytics()}
+      {renderAnalytics(payments)}
       <div className="payments-header">
         <h1>Payments</h1>
         <div className="filters">
@@ -259,6 +162,7 @@ export const UserPlan = () => {
               <th onClick={() => handleSort("status")}>Status</th>
               <th onClick={() => handleSort("startDate")}>Start Date</th>
               <th onClick={() => handleSort("endDate")}>End Date</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -285,6 +189,19 @@ export const UserPlan = () => {
                 </td>
                 <td>{formatDate(payment.startDate)}</td>
                 <td>{formatDate(payment.endDate)}</td>
+                <td>
+                  <button
+                    className={`delete-button ${
+                      deleteLoading === payment.userId ? "loading" : ""
+                    }`}
+                    onClick={() => handleDelete(payment.userId)}
+                    disabled={deleteLoading === payment.userId}
+                  >
+                    {deleteLoading === payment.userId
+                      ? "Deleting..."
+                      : "Delete"}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
