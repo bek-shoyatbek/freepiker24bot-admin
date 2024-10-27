@@ -15,7 +15,8 @@
 }
 
 .filters {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
@@ -24,8 +25,8 @@
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 300px;
   font-size: 14px;
+  width: 100%;
 }
 
 .filter-select {
@@ -33,7 +34,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
-  min-width: 120px;
+  width: 100%;
 }
 
 .table-container {
@@ -43,6 +44,7 @@
 }
 
 table {
+  table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
   white-space: nowrap;
@@ -70,6 +72,36 @@ tr:hover {
   background-color: #f9f9f9;
 }
 
+/* Column widths */
+th:nth-child(1),
+td:nth-child(1) {
+  width: 20%;
+} /* Username */
+th:nth-child(2),
+td:nth-child(2) {
+  width: 15%;
+} /* From */
+th:nth-child(3),
+td:nth-child(3) {
+  width: 12%;
+} /* Plan */
+th:nth-child(4),
+td:nth-child(4) {
+  width: 12%;
+} /* Status */
+th:nth-child(5),
+td:nth-child(5) {
+  width: 15%;
+} /* Start Date */
+th:nth-child(6),
+td:nth-child(6) {
+  width: 15%;
+} /* End Date */
+th:nth-child(7),
+td:nth-child(7) {
+  width: 11%;
+} /* Actions */
+
 .username-link {
   cursor: pointer;
   color: #2196f3;
@@ -84,6 +116,11 @@ tr:hover {
   font-size: 12px;
   color: #666;
   margin-top: 4px;
+}
+
+.from-text {
+  color: #666;
+  font-size: 14px;
 }
 
 .plan-badge,
@@ -119,6 +156,31 @@ tr:hover {
 .status-badge.expired {
   background-color: rgba(244, 67, 54, 0.1);
   color: #f44336;
+}
+
+/* Delete button styles */
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.delete-button:disabled {
+  background-color: #ffcdd2;
+  cursor: not-allowed;
+}
+
+.delete-button.loading {
+  opacity: 0.7;
 }
 
 /* Analytics Styles */
@@ -160,6 +222,39 @@ tr:hover {
   color: #666;
 }
 
+.source-analytics {
+  margin-bottom: 24px;
+}
+
+.source-analytics .analytics-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.source-analytics .analytics-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.source-analytics .analytics-row:hover {
+  background-color: #eeeeee;
+}
+
+.source-analytics .analytics-row span:first-child {
+  color: #666;
+}
+
+.source-analytics .analytics-row span:last-child {
+  font-weight: 500;
+  color: #2196f3;
+}
+
 .analytics-row {
   display: flex;
   justify-content: space-between;
@@ -186,33 +281,91 @@ tr:hover {
   color: #4caf50;
 }
 
+/* Loading and error states */
+.loading-state,
+.error-state {
+  padding: 24px;
+  text-align: center;
+  color: #666;
+}
+
+.error-state {
+  color: #f44336;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .analytics-grid {
     grid-template-columns: 1fr;
   }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+  }
+
+  .table-container {
+    margin: 0 -24px;
+    width: calc(100% + 48px);
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  th,
+  td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .delete-button {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .source-analytics .analytics-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .source-analytics .analytics-row span:last-child {
+    font-size: 13px;
+  }
 }
 
-.delete-button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s;
-}
+/* Print styles */
+@media print {
+  .payments-container {
+    padding: 0;
+  }
 
-.delete-button:hover {
-  background-color: #d32f2f;
-}
+  .filters,
+  .delete-button {
+    display: none;
+  }
 
-.delete-button:disabled {
-  background-color: #ffcdd2;
-  cursor: not-allowed;
-}
+  .table-container {
+    border: none;
+  }
 
-.delete-button.loading {
-  opacity: 0.7;
+  th {
+    background-color: white !important;
+    color: black;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  .plan-badge,
+  .status-badge {
+    background: none !important;
+    padding: 0;
+    color: black !important;
+  }
 }

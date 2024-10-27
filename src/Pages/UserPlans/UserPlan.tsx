@@ -12,6 +12,7 @@ export const UserPlan = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlan, setSelectedPlan] = useState("ALL");
   const [selectedStatus, setSelectedStatus] = useState("ALL");
+  const [selectedFrom, setSelectedFrom] = useState("ALL");
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<{
     key: string;
@@ -74,14 +75,52 @@ export const UserPlan = () => {
     navigate(`/user/${userId}`);
   };
 
+  // Get unique 'from' values for the filter dropdown
+  const uniqueFromValues = Array.from(
+    new Set(payments.map((payment) => payment.from || "Unknown"))
+  ).sort();
+
+  // Calculate counts by source
+  const sourceAnalytics = payments.reduce(
+    (acc: { [key: string]: number }, payment) => {
+      const source = payment.from || "Unknown";
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
+
+  const renderSourceAnalytics = () => (
+    <div className="analytics-card source-analytics">
+      <h3>Users by Source</h3>
+      <div className="analytics-content">
+        {Object.entries(sourceAnalytics)
+          .sort(([, a], [, b]) => b - a) // Sort by count in descending order
+          .map(([source, count]) => (
+            <div key={source} className="analytics-row">
+              <span>{source}</span>
+              <span>
+                {count} users ({((count / payments.length) * 100).toFixed(1)}%)
+              </span>
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+
   const filteredData = payments.filter((item) => {
     const matchesSearch =
       item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.userId.toLowerCase().includes(searchTerm.toLowerCase());
+      item.userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.from?.toLowerCase() || "").includes(searchTerm.toLowerCase());
     const matchesPlan = selectedPlan === "ALL" || item.plan === selectedPlan;
     const matchesStatus =
       selectedStatus === "ALL" || item.status === selectedStatus;
-    return matchesSearch && matchesPlan && matchesStatus;
+    const matchesFrom =
+      selectedFrom === "ALL" ||
+      item.from === selectedFrom ||
+      (!item.from && selectedFrom === "Unknown");
+    return matchesSearch && matchesPlan && matchesStatus && matchesFrom;
   });
 
   const sortData = (a: any, b: any, key: string, direction: "asc" | "desc") => {
@@ -92,7 +131,7 @@ export const UserPlan = () => {
     }
 
     if (typeof a[key] === "string") {
-      const compareResult = a[key].localeCompare(b[key]);
+      const compareResult = (a[key] || "").localeCompare(b[key] || "");
       return direction === "asc" ? compareResult : -compareResult;
     }
 
@@ -121,12 +160,13 @@ export const UserPlan = () => {
   return (
     <div className="payments-container">
       {renderAnalytics(payments)}
+      {renderSourceAnalytics()}
       <div className="payments-header">
         <h1>Payments</h1>
         <div className="filters">
           <input
             type="text"
-            placeholder="Search by username or ID..."
+            placeholder="Search by username, ID, or from..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
@@ -150,6 +190,18 @@ export const UserPlan = () => {
             <option value="active">Active</option>
             <option value="expired">Expired</option>
           </select>
+          <select
+            value={selectedFrom}
+            onChange={(e) => setSelectedFrom(e.target.value)}
+            className="filter-select"
+          >
+            <option value="ALL">All Sources</option>
+            {uniqueFromValues.map((from) => (
+              <option key={from} value={from}>
+                {from}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -158,6 +210,7 @@ export const UserPlan = () => {
           <thead>
             <tr>
               <th onClick={() => handleSort("username")}>Username</th>
+              <th onClick={() => handleSort("from")}>From</th>
               <th onClick={() => handleSort("plan")}>Plan</th>
               <th onClick={() => handleSort("status")}>Status</th>
               <th onClick={() => handleSort("startDate")}>Start Date</th>
@@ -176,6 +229,9 @@ export const UserPlan = () => {
                     {payment.username}
                     <span className="user-id">{payment.userId}</span>
                   </div>
+                </td>
+                <td>
+                  <span className="from-text">{payment.from || "-"}</span>
                 </td>
                 <td>
                   <span className={`plan-badge ${payment.plan.toLowerCase()}`}>
