@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./Payments.css";
+import "./UserPlan.css";
 import { Axios } from "../../Api/axios";
 import { PaymentsData } from "./types/payments-data";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ const PLAN_PRICES = {
   PREMIUM: 39000,
 };
 
-export const Payments = () => {
+export const UserPlan = () => {
   const [payments, setPayments] = useState<PaymentsData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,19 +31,10 @@ export const Payments = () => {
     fetchPayments();
   }, []);
 
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * Fetches the list of payments from the server.
-   * Sets the loading state to true while fetching data.
-   * On success, updates the payments state with the fetched data and clears any error messages.
-   * On failure, sets an error message indicating the fetch failure.
-   * Finally, resets the loading state to false.
-   */
-  /******  ee2e8f9c-3c9e-47cd-b07d-c441df77dd4f  *******/
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const response = await Axios.get("/payments");
+      const response = await Axios.get("/user-plans");
       if (response.data?.data) {
         setPayments(response.data.data);
       }

@@ -7,7 +7,7 @@ import { MessagesPage } from "./Pages/Messages/Message.component";
 import { LoginPage } from "./Pages/Admins/LoginPage.component";
 import { AuthProvider } from "./providers/AuthProvider/AuthProvider";
 import { Navbar } from "./components/Navbar/Navbar.component";
-import { Payments } from "./Pages/Payments/Payments";
+import { UserPlan } from "./Pages/UserPlans/UserPlan";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/user/:id" element={<UserDetailsPage />} />
             <Route path="/message" element={<MessagesPage />} />
-            <Route path="/payments" element={<Payments />} />
+            <Route path="/user-plans" element={<UserPlan />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>

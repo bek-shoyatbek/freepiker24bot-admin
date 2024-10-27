@@ -9,8 +9,8 @@ export const Navbar = () => {
       <Link to="/message" className="nav-link">
         Message
       </Link>
-      <Link to="/payments" className="nav-link">
-        Payments
+      <Link to="/user-plans" className="nav-link">
+        User Plans
       </Link>
       <Link to="/login" className="nav-link">
         Login
