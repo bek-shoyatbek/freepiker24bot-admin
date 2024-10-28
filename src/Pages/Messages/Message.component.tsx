@@ -4,14 +4,15 @@ import "./Message.styles.css";
 import { Axios } from "../../Api/axios";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { MessageWithDelivery } from "./types/message-delivery-status.interface";
 
 export const MessagesPage = () => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<MessageWithDelivery[]>([]);
   const [newMessage, setNewMessage] = useState<IMessage>({
     title: "",
     text: "",
   });
-  const [editingMessage, setEditingMessage] = useState<IMessage>();
+  const [editingMessage, setEditingMessage] = useState<MessageWithDelivery>();
 
   const navigate = useNavigate();
 
@@ -29,6 +30,33 @@ export const MessagesPage = () => {
         navigate("/login");
       }
       console.error("Error fetching messages:", error);
+    }
+  };
+
+  const fetchDeliveryStatus = async (messageId: string) => {
+    try {
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg._id === messageId ? { ...msg, isLoadingStatus: true } : msg
+        )
+      );
+
+      const response = await Axios.get(`/messages/${messageId}/sent-analytics`);
+
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg._id === messageId
+            ? { ...msg, deliveryStatus: response.data, isLoadingStatus: false }
+            : msg
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching delivery status:", error);
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg._id === messageId ? { ...msg, isLoadingStatus: false } : msg
+        )
+      );
     }
   };
 
@@ -51,11 +79,9 @@ export const MessagesPage = () => {
 
   const updateMessage = async (id: string) => {
     try {
-      console.log("MessageID ", id);
-
       const response = await Axios.put(
         `/messages/${id}`,
-        JSON.stringify(editingMessage),
+        JSON.stringify(editingMessage)
       );
 
       if (response.status == 200) {
@@ -142,8 +168,52 @@ export const MessagesPage = () => {
             </>
           ) : (
             <>
-              <h2>{message!.title}</h2>
-              <p>{message!.text}</p>
+              <h2>{message.title}</h2>
+              <p>{message.text}</p>
+
+              <div className="delivery-status">
+                {!message.deliveryStatus && !message.isLoadingStatus && (
+                  <button
+                    onClick={() => fetchDeliveryStatus(message._id as string)}
+                    className="status-button"
+                  >
+                    View Delivery Status
+                  </button>
+                )}
+
+                {message.isLoadingStatus && (
+                  <div className="loading-status">
+                    Loading delivery status...
+                  </div>
+                )}
+
+                {message.deliveryStatus && (
+                  <div className="status-details">
+                    <h3>Delivery Analytics</h3>
+                    <div className="status-grid">
+                      <div className="status-item">
+                        <span>Total Attempts:</span>
+                        <span>{message.deliveryStatus.totalAttempts}</span>
+                      </div>
+                      <div className="status-item">
+                        <span>Successful:</span>
+                        <span>
+                          {message.deliveryStatus.successfulDeliveries}
+                        </span>
+                      </div>
+                      <div className="status-item">
+                        <span>Failed:</span>
+                        <span>{message.deliveryStatus.failedDeliveries}</span>
+                      </div>
+                      <div className="status-item">
+                        <span>Delivery Rate:</span>
+                        <span>{message.deliveryStatus.deliveryRate}%</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="button-group">
                 <button
                   onClick={() => setEditingMessage(message)}
