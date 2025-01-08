@@ -52,7 +52,7 @@ export const UserPlan = () => {
     try {
       setDeleteLoading(userPlanId);
       await Axios.delete(`/user-plans/${userPlanId}`);
-      setPayments(payments.filter((payment) => payment.userId !== userPlanId));
+      setPayments(payments.filter((payment) => payment.id !== userPlanId));
     } catch (err) {
       setError("Failed to delete user plan. Please try again later.");
       console.error("Error deleting user plan:", err);
