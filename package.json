@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build --outDir admin-ui",
+    "build": "tsc -b && vite build --outDir frontend",
     "lint": "eslint .",
     "preview": "vite preview"
   },

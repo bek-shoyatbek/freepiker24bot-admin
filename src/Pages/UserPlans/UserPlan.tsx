@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import "./UserPlan.css";
 import { Axios } from "../../Api/axios";
-import { PaymentsData } from "./types/payments-data";
+import { PaymentData } from "./types/payments-data";
 import { useNavigate } from "react-router-dom";
 import { formatDate, renderAnalytics } from "./helpers";
 
 export const UserPlan = () => {
-  const [payments, setPayments] = useState<PaymentsData[]>([]);
+  const [payments, setPayments] = useState<PaymentData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -80,7 +80,6 @@ export const UserPlan = () => {
     new Set(payments.map((payment) => payment.from || "Unknown"))
   ).sort();
 
-  // Calculate counts by source
   const sourceAnalytics = payments.reduce(
     (acc: { [key: string]: number }, payment) => {
       const source = payment.from || "Unknown";
@@ -250,10 +249,10 @@ export const UserPlan = () => {
                     className={`delete-button ${
                       deleteLoading === payment.userId ? "loading" : ""
                     }`}
-                    onClick={() => handleDelete(payment.userId)}
-                    disabled={deleteLoading === payment.userId}
+                    onClick={() => handleDelete(payment.id)}
+                    disabled={deleteLoading === payment.id}
                   >
-                    {deleteLoading === payment.userId
+                    {deleteLoading === payment.id
                       ? "Deleting..."
                       : "Delete"}
                   </button>

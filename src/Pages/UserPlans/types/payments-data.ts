@@ -1,4 +1,5 @@
-export interface PaymentsData {
+export interface PaymentData {
+    id: string,
     userId: string,
     username: string,
     from?: string,
