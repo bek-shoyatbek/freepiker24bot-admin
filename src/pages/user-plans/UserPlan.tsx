@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./UserPlan.css";
-import { Axios } from "../../Api/axios";
+import { Axios } from "../../api";
 import { PaymentData } from "./types/payments-data";
 import { useNavigate } from "react-router-dom";
 import { formatDate, renderAnalytics } from "./helpers";

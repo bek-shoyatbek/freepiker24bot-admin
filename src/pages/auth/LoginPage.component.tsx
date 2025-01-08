@@ -18,14 +18,11 @@ export const LoginPage: React.FC = () => {
 
     try {
       await login(username, password);
-      // Handle successful login, e.g., store the token in localStorage
-      // Show success message
       Swal.fire({
         icon: "success",
         title: "Login Successful",
         text: "You have been successfully logged in!",
       });
-      // Redirect or update app state as needed
       navigate("/");
     } catch (err) {
       console.error(err);

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { UserCard } from "../UserCard/UserCard.component";
-import { MessageSelectionModal } from "../../Messages/MessageModel/MessageModel.component";
+import { MessageSelectionModal } from "../../messages/MessageModel/MessageModel.component";
 import "./UserListPage.styles.css";
 import { UserInterface } from "../../../types/user.interface";
-import { Axios } from "../../../Api/axios";
+import { Axios } from "../../../api";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 

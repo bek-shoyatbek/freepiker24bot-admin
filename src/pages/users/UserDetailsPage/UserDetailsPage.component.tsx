@@ -6,7 +6,7 @@ import { PaymentInterface } from "../../../types/payment.interface";
 import { UserPlan } from "../../../types/user-plan.interface";
 import { PaymentHistory } from "../PaymentHistory/PaymentHistory.component";
 import { UserPlanHistory } from "../UserPlanHistory/UserPlanHistory.component";
-import { Axios } from "../../../Api/axios";
+import { Axios } from "../../../api";
 import { MessageCircle, User, RotateCcw, FileText } from "lucide-react";
 
 export const UserDetailsPage = () => {

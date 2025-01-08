@@ -1,13 +1,13 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import { UserListPage } from "./Pages/Users/UserListPage/UserListPage.component";
-import { UserDetailsPage } from "./Pages/Users/UserDetailsPage/UserDetailsPage.component";
-import { NotFoundPage } from "./Pages/ErrorPages/NotFoundPage.component";
-import { MessagesPage } from "./Pages/Messages/Message.component";
-import { LoginPage } from "./Pages/Admins/LoginPage.component";
+import { UserListPage } from "./pages/users/UserListPage/UserListPage.component";
+import { UserDetailsPage } from "./pages/users/UserDetailsPage/UserDetailsPage.component";
+import { NotFoundPage } from "./pages/errors/NotFoundPage.component";
+import { MessagesPage } from "./pages/messages/Message.component";
+import { LoginPage } from "./pages/auth/LoginPage.component";
 import { AuthProvider } from "./providers/AuthProvider/AuthProvider";
 import { Navbar } from "./components/Navbar/Navbar.component";
-import { UserPlan } from "./Pages/UserPlans/UserPlan";
+import { UserPlan } from "./pages/user-plans/UserPlan";
 
 function App() {
   return (

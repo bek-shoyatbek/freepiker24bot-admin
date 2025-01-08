@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IMessage } from "./types/Message.interface";
 import "./Message.styles.css";
-import { Axios } from "../../Api/axios";
+import { Axios } from "../../api";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { MessageWithDelivery } from "./types/message-delivery-status.interface";

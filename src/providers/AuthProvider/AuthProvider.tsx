@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext/AuthContext";
-import { Axios } from "../../Api/axios";
+import { AuthContext } from "../../contexts/AuthContext";
+import { Axios } from "../../api";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token"),
+    localStorage.getItem("token")
   );
 
   useEffect(() => {
@@ -22,8 +22,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const response = await Axios.post("/auth/login", { username, password });
       const newToken = response.data.token;
-      setToken(newToken);
       localStorage.setItem("token", newToken);
+      setToken(newToken);
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
