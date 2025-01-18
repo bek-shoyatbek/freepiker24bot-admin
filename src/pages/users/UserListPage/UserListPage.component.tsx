@@ -75,7 +75,7 @@ export const UserListPage = () => {
     setSelectedUsers((prev) =>
       prev.includes(user)
         ? prev.filter((oldUser) => user.telegramId != oldUser.telegramId)
-        : [...prev, user],
+        : [...prev, user]
     );
   };
 

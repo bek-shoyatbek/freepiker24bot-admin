@@ -252,9 +252,7 @@ export const UserPlan = () => {
                     onClick={() => handleDelete(payment.id)}
                     disabled={deleteLoading === payment.id}
                   >
-                    {deleteLoading === payment.id
-                      ? "Deleting..."
-                      : "Delete"}
+                    {deleteLoading === payment.id ? "Deleting..." : "Delete"}
                   </button>
                 </td>
               </tr>
