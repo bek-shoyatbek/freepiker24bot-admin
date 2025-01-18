@@ -4,4 +4,6 @@ export interface PaymentInterface {
   amount: number;
   status: "pending" | "approved" | "rejected";
   chequeImage: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

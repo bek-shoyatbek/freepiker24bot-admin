@@ -8,6 +8,7 @@ import { LoginPage } from "./pages/auth/LoginPage.component";
 import { AuthProvider } from "./providers/AuthProvider/AuthProvider";
 import { Navbar } from "./components/Navbar/Navbar.component";
 import { UserPlan } from "./pages/user-plans/UserPlan";
+import { AnalyticsDashboard } from "./pages/analytics/Analytics.page";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/user/:id" element={<UserDetailsPage />} />
             <Route path="/message" element={<MessagesPage />} />
             <Route path="/user-plans" element={<UserPlan />} />
+            <Route path="/analytics" element={<AnalyticsDashboard />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>

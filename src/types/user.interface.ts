@@ -6,4 +6,6 @@ export interface UserInterface {
   freeTrialUsed: boolean;
   dailyRequestsCount: number;
   lastResetDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
